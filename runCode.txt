@@ -1,0 +1,10 @@
+WINDOWS:
+javac -cp "lib/*" -d bin (Get-ChildItem -Path src -Recurse -Filter *.java | Select-Object -ExpandProperty FullName)
+java -cp "bin;lib/*" com.gect.connect.main.Main
+
+LINUX:
+javac -cp "lib/*" -d bin src/com/gect/connect/**/*.java
+java -cp "bin;lib/*" com.gect.connect.main.Main
+
+DATABASE:
+IN FILE:DBConnection.java
