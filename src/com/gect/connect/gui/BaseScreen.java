@@ -1,73 +1,83 @@
 package com.gect.connect.gui;
 
-import javax.swing.*;
 import java.awt.*;
+import javax.swing.*;
 
 /**
  * Base screen class for common UI settings.
  */
 public abstract class BaseScreen extends JFrame {
-    // WhatsApp-inspired Color Palette
-    public static final Color WA_TEAL = new Color(7, 94, 84);       // Header background
-    public static final Color WA_GREEN = new Color(37, 211, 102);    // Vibrant Accents (Primary Buttons)
-    public static final Color WA_DARK_GREEN = new Color(18, 140, 126); // Darker accents
-    public static final Color WA_CHAT_BG = new Color(236, 229, 221); // Chat background
-    public static final Color WA_OUTGOING = new Color(220, 248, 198); // My message bubbles
-    public static final Color WA_INCOMING = Color.WHITE;              // Other's message bubbles
-    public static final Color WA_GRAY = new Color(110, 110, 110);    // Secondary text
-    public static final Color WA_LIGHT_GRAY = new Color(240, 240, 240); // List background
+    // Modern Professional Color Palette
+    public static final Color PRIMARY_DARK = new Color(30, 41, 59);    // Slate 800 (Headers)
+    public static final Color ACCENT_BLUE = new Color(59, 130, 246);   // Blue 500 (Primary buttons/icons)
+    public static final Color ACCENT_DARK_BLUE = new Color(37, 99, 235); // Blue 600
+    public static final Color BG_LIGHT = new Color(248, 250, 252);     // Slate 50 (App background)
+    public static final Color CARD_WHITE = Color.WHITE;                // Cards/Bubbles
+    public static final Color TEXT_MAIN = new Color(15, 23, 42);       // Slate 900
+    public static final Color TEXT_SECONDARY = new Color(100, 116, 139); // Slate 500
+    public static final Color DIVIDER = new Color(226, 232, 240);      // Slate 200
+    public static final Color HOVER_COLOR = new Color(241, 245, 249);  // Slate 100
+
+    // Backward compatibility aliases
+    public static final Color WA_TEAL = PRIMARY_DARK;
+    public static final Color WA_GREEN = ACCENT_BLUE;
+    public static final Color WA_DARK_GREEN = ACCENT_DARK_BLUE;
+    public static final Color WA_CHAT_BG = BG_LIGHT;
+    public static final Color WA_OUTGOING = new Color(219, 234, 254);
+    public static final Color WA_INCOMING = CARD_WHITE;
+    public static final Color WA_GRAY = TEXT_SECONDARY;
+    public static final Color WA_LIGHT_GRAY = HOVER_COLOR;
 
     public BaseScreen(String title) {
         setTitle("GECT Connect - " + title);
-        setSize(400, 650); // More standard mobile-app ratio
+        setSize(400, 700);
         setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         setLocationRelativeTo(null);
-        getContentPane().setBackground(Color.WHITE); // Default to white for cleaner look
+        getContentPane().setBackground(BG_LIGHT); 
     }
 
     protected void styleHeader(JPanel panel, JLabel title) {
-        panel.setLayout(new FlowLayout(FlowLayout.CENTER, 10, 15));
-        panel.setBackground(WA_TEAL);
-        panel.setPreferredSize(new Dimension(400, 60));
+        panel.setLayout(new BorderLayout());
+        panel.setBackground(PRIMARY_DARK);
+        panel.setPreferredSize(new Dimension(400, 70));
+        panel.setBorder(BorderFactory.createEmptyBorder(0, 15, 0, 15));
+        
         title.setForeground(Color.WHITE);
-        title.setFont(new Font("Segoe UI", Font.BOLD, 18));
+        title.setFont(new Font("Segoe UI", Font.BOLD, 20));
+        panel.add(title, BorderLayout.CENTER);
     }
 
     protected void addBackButton(JPanel headerPanel) {
-        JButton backBtn = new JButton("←");
+        JButton backBtn = new JButton("<html><span style='font-size:18px;'>←</span></html>");
         backBtn.setForeground(Color.WHITE);
-        backBtn.setFont(new Font("Segoe UI", Font.BOLD, 20));
         backBtn.setContentAreaFilled(false);
         backBtn.setBorderPainted(false);
         backBtn.setFocusPainted(false);
         backBtn.setCursor(new Cursor(Cursor.HAND_CURSOR));
         backBtn.addActionListener(e -> dispose());
         
-        // If header uses BorderLayout, add to WEST. If FlowLayout, add at start.
-        if (headerPanel.getLayout() instanceof BorderLayout) {
-            headerPanel.add(backBtn, BorderLayout.WEST);
-        } else {
-            headerPanel.add(backBtn, 0); // Add at index 0
-        }
+        headerPanel.add(backBtn, BorderLayout.WEST);
     }
 
     protected JTextField createTextField(int columns) {
         JTextField field = new JTextField(columns);
         field.setBorder(BorderFactory.createCompoundBorder(
-            BorderFactory.createLineBorder(new Color(200, 200, 200), 1),
-            BorderFactory.createEmptyBorder(8, 10, 8, 10)
+            BorderFactory.createLineBorder(DIVIDER, 1),
+            BorderFactory.createEmptyBorder(10, 12, 10, 12)
         ));
         field.setFont(new Font("Segoe UI", Font.PLAIN, 14));
+        field.setBackground(CARD_WHITE);
         return field;
     }
 
     protected JPasswordField createPasswordField(int columns) {
         JPasswordField field = new JPasswordField(columns);
         field.setBorder(BorderFactory.createCompoundBorder(
-            BorderFactory.createLineBorder(new Color(200, 200, 200), 1),
-            BorderFactory.createEmptyBorder(8, 10, 8, 10)
+            BorderFactory.createLineBorder(DIVIDER, 1),
+            BorderFactory.createEmptyBorder(10, 12, 10, 12)
         ));
         field.setFont(new Font("Segoe UI", Font.PLAIN, 14));
+        field.setBackground(CARD_WHITE);
         return field;
     }
 
@@ -75,21 +85,20 @@ public abstract class BaseScreen extends JFrame {
         JButton btn = new JButton(text);
         btn.setFocusPainted(false);
         btn.setFont(new Font("Segoe UI", Font.BOLD, 13));
-        btn.setOpaque(true);
-        btn.setBorderPainted(true);
-        btn.setForeground(WA_GREEN); // Set text color to GREEN as requested
+        btn.setCursor(new Cursor(Cursor.HAND_CURSOR));
         
         if (primary) {
-            btn.setBackground(WA_TEAL); // Strong visible color for primary actions
+            btn.setBackground(ACCENT_BLUE);
+            btn.setForeground(Color.WHITE);
             btn.setBorder(BorderFactory.createEmptyBorder(12, 25, 12, 25));
         } else {
-            btn.setBackground(Color.WHITE);
+            btn.setBackground(CARD_WHITE);
+            btn.setForeground(ACCENT_BLUE);
             btn.setBorder(BorderFactory.createCompoundBorder(
-                BorderFactory.createLineBorder(WA_TEAL, 1),
+                BorderFactory.createLineBorder(ACCENT_BLUE, 1),
                 BorderFactory.createEmptyBorder(11, 24, 11, 24)
             ));
         }
-        btn.setCursor(new Cursor(Cursor.HAND_CURSOR));
         return btn;
     }
 

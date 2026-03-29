@@ -32,30 +32,31 @@ public class GroupsListScreen extends BaseScreen {
     private void initUI() {
         setLayout(new BorderLayout());
 
-        // Header Panel (WhatsApp Teal)
-        JPanel headerPanel = new JPanel(new BorderLayout());
-        JLabel titleLabel = new JLabel("  GECT Connect", JLabel.LEFT);
-        styleHeader(headerPanel, titleLabel);
+        // Header
+        JPanel headerPanel = new JPanel();
+        JLabel headerTitle = new JLabel("Groups");
+        styleHeader(headerPanel, headerTitle);
         addBackButton(headerPanel);
         
         JPanel topActions = new JPanel(new FlowLayout(FlowLayout.RIGHT, 10, 10));
         topActions.setOpaque(false);
-        JButton refreshBtn = new JButton("↺"); // Unicode refresh
+        JButton refreshBtn = new JButton("<html><span style='font-size:18px;'>↺</span></html>");
         refreshBtn.setToolTipText("Refresh Groups");
         refreshBtn.setForeground(Color.WHITE);
-        refreshBtn.setBackground(WA_TEAL);
-        refreshBtn.setBorder(null);
+        refreshBtn.setContentAreaFilled(false);
+        refreshBtn.setBorderPainted(false);
+        refreshBtn.setFocusPainted(false);
+        refreshBtn.setCursor(new Cursor(Cursor.HAND_CURSOR));
         refreshBtn.addActionListener(e -> refreshGroups());
         topActions.add(refreshBtn);
         headerPanel.add(topActions, BorderLayout.EAST);
-        headerPanel.add(titleLabel, BorderLayout.CENTER);
 
         add(headerPanel, BorderLayout.NORTH);
 
         // List Panel
         groupList.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
-        groupList.setBackground(Color.WHITE);
-        groupList.setFixedCellHeight(70);
+        groupList.setBackground(BG_LIGHT);
+        groupList.setFixedCellHeight(80);
         groupList.setCellRenderer(new GroupListRenderer());
         
         // Double-click to open chat
@@ -72,10 +73,10 @@ public class GroupsListScreen extends BaseScreen {
         scrollPane.setBorder(null);
         add(scrollPane, BorderLayout.CENTER);
 
-        // Bottom Action Bar (FAB-like for creating group)
+        // Bottom Action Bar
         JPanel footerPanel = new JPanel(new BorderLayout());
-        footerPanel.setBackground(Color.WHITE);
-        footerPanel.setBorder(BorderFactory.createMatteBorder(1, 0, 0, 0, Color.LIGHT_GRAY));
+        footerPanel.setBackground(CARD_WHITE);
+        footerPanel.setBorder(BorderFactory.createMatteBorder(1, 0, 0, 0, DIVIDER));
 
         JButton createBtn = createWAButton("ADD GROUP", true);
         createBtn.addActionListener(e -> new CreateGroupScreen(currentUser, this).setVisible(true));
@@ -87,7 +88,7 @@ public class GroupsListScreen extends BaseScreen {
             else showInfo("Select a group first");
         });
 
-        JPanel btnWrapper = new JPanel(new FlowLayout(FlowLayout.RIGHT));
+        JPanel btnWrapper = new JPanel(new FlowLayout(FlowLayout.RIGHT, 15, 15));
         btnWrapper.setOpaque(false);
         btnWrapper.add(infoBtn);
         btnWrapper.add(createBtn);
@@ -104,17 +105,20 @@ public class GroupsListScreen extends BaseScreen {
         }
     }
 
-    // Custom Renderer for WhatsApp-style list items
+    // Custom Renderer for modern list items
     private class GroupListRenderer extends DefaultListCellRenderer {
         @Override
         public Component getListCellRendererComponent(JList<?> list, Object value, int index, boolean isSelected, boolean cellHasFocus) {
             ChatGroup group = (ChatGroup) value;
             JPanel panel = new JPanel(new BorderLayout(15, 10));
-            panel.setBackground(isSelected ? new Color(240, 240, 240) : Color.WHITE);
-            panel.setBorder(BorderFactory.createEmptyBorder(10, 15, 10, 15));
+            panel.setBackground(isSelected ? HOVER_COLOR : CARD_WHITE);
+            panel.setBorder(BorderFactory.createCompoundBorder(
+                BorderFactory.createMatteBorder(0, 0, 1, 0, DIVIDER),
+                BorderFactory.createEmptyBorder(12, 20, 12, 20)
+            ));
 
             // Circle Icon Placeholder
-            JLabel icon = new JLabel("<html><div style='background-color:#128C7E; width:45px; height:45px; border-radius:22px; color:white; text-align:center;'><br>" + group.getGroupName().charAt(0) + "</div></html>");
+            JLabel icon = new JLabel("<html><div style='background-color:#3b82f6; width:45px; height:45px; border-radius:22px; color:white; text-align:center;'><br>" + group.getGroupName().charAt(0) + "</div></html>");
             panel.add(icon, BorderLayout.WEST);
 
             // Group Info (Name & Description)
@@ -122,20 +126,21 @@ public class GroupsListScreen extends BaseScreen {
             textPanel.setOpaque(false);
             
             JLabel nameLabel = new JLabel(group.getGroupName());
-            nameLabel.setFont(new Font("Segoe UI", Font.BOLD, 15));
+            nameLabel.setFont(new Font("Segoe UI", Font.BOLD, 16));
+            nameLabel.setForeground(TEXT_MAIN);
             textPanel.add(nameLabel);
 
             JLabel descLabel = new JLabel(group.getDescription());
-            descLabel.setFont(new Font("Segoe UI", Font.PLAIN, 12));
-            descLabel.setForeground(WA_GRAY);
+            descLabel.setFont(new Font("Segoe UI", Font.PLAIN, 13));
+            descLabel.setForeground(TEXT_SECONDARY);
             textPanel.add(descLabel);
 
             panel.add(textPanel, BorderLayout.CENTER);
 
-            // Right Info (Date/Type)
+            // Right Info (Type)
             JLabel typeLabel = new JLabel(group.getGroupType());
-            typeLabel.setFont(new Font("Segoe UI", Font.PLAIN, 10));
-            typeLabel.setForeground(WA_GREEN);
+            typeLabel.setFont(new Font("Segoe UI", Font.BOLD, 10));
+            typeLabel.setForeground(ACCENT_BLUE);
             panel.add(typeLabel, BorderLayout.EAST);
 
             return panel;

@@ -22,24 +22,15 @@ public class ProfileViewScreen extends BaseScreen {
         setLayout(new BorderLayout());
 
         // Header
-        JPanel headerPanel = new JPanel(new BorderLayout());
-        headerPanel.setBackground(WA_TEAL);
-        headerPanel.setPreferredSize(new Dimension(400, 60));
-
-        JPanel leftHeader = new JPanel(new FlowLayout(FlowLayout.LEFT, 10, 15));
-        leftHeader.setOpaque(false);
-        addBackButton(leftHeader);
-        
-        JLabel headerTitle = new JLabel("Profile");
-        headerTitle.setForeground(Color.WHITE);
-        headerTitle.setFont(new Font("Segoe UI", Font.BOLD, 18));
-        leftHeader.add(headerTitle);
-        headerPanel.add(leftHeader, BorderLayout.WEST);
+        JPanel headerPanel = new JPanel();
+        JLabel headerTitle = new JLabel("My Profile");
+        styleHeader(headerPanel, headerTitle);
+        addBackButton(headerPanel);
         add(headerPanel, BorderLayout.NORTH);
 
         JPanel contentPanel = new JPanel();
         contentPanel.setLayout(new BoxLayout(contentPanel, BoxLayout.Y_AXIS));
-        contentPanel.setBackground(Color.WHITE);
+        contentPanel.setBackground(WA_CHAT_BG);
         contentPanel.setBorder(BorderFactory.createEmptyBorder(30, 0, 0, 0));
 
         // Profile Picture (Circle)

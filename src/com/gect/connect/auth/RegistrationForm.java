@@ -25,93 +25,100 @@ public class RegistrationForm extends BaseScreen {
     private void initUI() {
         setLayout(new BorderLayout());
 
-        JPanel headerPanel = new JPanel(new BorderLayout());
-        headerPanel.setBackground(WA_TEAL);
-        headerPanel.setPreferredSize(new Dimension(400, 60));
-
-        JPanel leftHeader = new JPanel(new FlowLayout(FlowLayout.LEFT, 10, 15));
-        leftHeader.setOpaque(false);
-        addBackButton(leftHeader);
-        
+        JPanel headerPanel = new JPanel();
         JLabel headerTitle = new JLabel("Create Account");
-        headerTitle.setForeground(Color.WHITE);
-        headerTitle.setFont(new Font("Segoe UI", Font.BOLD, 18));
-        leftHeader.add(headerTitle);
-        headerPanel.add(leftHeader, BorderLayout.WEST);
+        styleHeader(headerPanel, headerTitle);
+        addBackButton(headerPanel);
         add(headerPanel, BorderLayout.NORTH);
 
         JPanel mainPanel = new JPanel(new BorderLayout());
-        mainPanel.setBackground(Color.WHITE);
+        mainPanel.setBackground(BG_LIGHT);
 
         JPanel formPanel = new JPanel();
         formPanel.setLayout(new GridBagLayout());
-        formPanel.setBackground(Color.WHITE);
+        formPanel.setBackground(BG_LIGHT);
         GridBagConstraints gbc = new GridBagConstraints();
-        gbc.insets = new Insets(8, 20, 8, 20);
+        gbc.insets = new Insets(10, 25, 10, 25);
         gbc.fill = GridBagConstraints.HORIZONTAL;
         gbc.weightx = 1.0;
 
         int row = 0;
         gbc.gridx = 0; gbc.gridy = row++;
-        formPanel.add(new JLabel("Full Name"), gbc);
+        JLabel nameLabel = new JLabel("Full Name");
+        nameLabel.setForeground(TEXT_SECONDARY);
+        formPanel.add(nameLabel, gbc);
         gbc.gridy = row++;
         nameField = createTextField(20);
         formPanel.add(nameField, gbc);
 
         gbc.gridy = row++;
-        formPanel.add(new JLabel("College Email (@gectcr.ac.in)"), gbc);
+        JLabel emailLabel = new JLabel("College Email (@gectcr.ac.in)");
+        emailLabel.setForeground(TEXT_SECONDARY);
+        formPanel.add(emailLabel, gbc);
         gbc.gridy = row++;
         emailField = createTextField(20);
         formPanel.add(emailField, gbc);
         
         gbc.gridy = row++;
-        formPanel.add(new JLabel("Department"), gbc);
+        JLabel deptLabel = new JLabel("Department");
+        deptLabel.setForeground(TEXT_SECONDARY);
+        formPanel.add(deptLabel, gbc);
         gbc.gridy = row++;
         String[] departments = {"Mechanical", "Civil", "Production", "EC", "EEE", "Architecture", "CSE", "MCA", "M.Tech"};
         deptCombo = new JComboBox<>(departments);
-        deptCombo.setBackground(Color.WHITE);
+        deptCombo.setBackground(CARD_WHITE);
         formPanel.add(deptCombo, gbc);
 
         gbc.gridy = row++;
-        formPanel.add(new JLabel("Role"), gbc);
+        JLabel roleLabel = new JLabel("Role");
+        roleLabel.setForeground(TEXT_SECONDARY);
+        formPanel.add(roleLabel, gbc);
         gbc.gridy = row++;
         String[] roles = {"Student", "Staff"};
         roleCombo = new JComboBox<>(roles);
-        roleCombo.setBackground(Color.WHITE);
+        roleCombo.setBackground(CARD_WHITE);
         formPanel.add(roleCombo, gbc);
 
         gbc.gridy = row++;
-        formPanel.add(new JLabel("Roll No / Employee ID"), gbc);
+        JLabel rollLabel = new JLabel("Roll No / Employee ID");
+        rollLabel.setForeground(TEXT_SECONDARY);
+        formPanel.add(rollLabel, gbc);
         gbc.gridy = row++;
         rollEmpIdField = createTextField(20);
         formPanel.add(rollEmpIdField, gbc);
 
         gbc.gridy = row++;
-        formPanel.add(new JLabel("Mobile Number"), gbc);
+        JLabel mobileLabel = new JLabel("Mobile Number");
+        mobileLabel.setForeground(TEXT_SECONDARY);
+        formPanel.add(mobileLabel, gbc);
         gbc.gridy = row++;
         mobileField = createTextField(20);
         formPanel.add(mobileField, gbc);
 
         gbc.gridy = row++;
-        formPanel.add(new JLabel("Password"), gbc);
+        JLabel passLabel = new JLabel("Password");
+        passLabel.setForeground(TEXT_SECONDARY);
+        formPanel.add(passLabel, gbc);
         gbc.gridy = row++;
         passField = createPasswordField(20);
         formPanel.add(passField, gbc);
 
         gbc.gridy = row++;
-        formPanel.add(new JLabel("Confirm Password"), gbc);
+        JLabel confirmLabel = new JLabel("Confirm Password");
+        confirmLabel.setForeground(TEXT_SECONDARY);
+        formPanel.add(confirmLabel, gbc);
         gbc.gridy = row++;
         confirmPassField = createPasswordField(20);
         formPanel.add(confirmPassField, gbc);
 
         // Buttons
         gbc.gridy = row++;
-        gbc.insets = new Insets(20, 20, 10, 20);
+        gbc.insets = new Insets(25, 25, 10, 25);
         JButton registerBtn = createWAButton("REGISTER", true);
         formPanel.add(registerBtn, gbc);
 
         gbc.gridy = row++;
-        gbc.insets = new Insets(5, 20, 20, 20);
+        gbc.insets = new Insets(5, 25, 30, 25);
         JButton backBtn = createWAButton("ALREADY HAVE AN ACCOUNT? LOGIN", false);
         formPanel.add(backBtn, gbc);
 

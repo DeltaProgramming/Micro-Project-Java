@@ -25,20 +25,19 @@ public class CampusEventsFeedScreen extends BaseScreen {
     private void initUI() {
         setLayout(new BorderLayout());
 
+        // Header
         JPanel headerPanel = new JPanel();
-        JLabel headerTitle = new JLabel("GECT Events Feed");
+        JLabel headerTitle = new JLabel("Campus Events");
         styleHeader(headerPanel, headerTitle);
-        headerPanel.add(headerTitle);
+        addBackButton(headerPanel);
         add(headerPanel, BorderLayout.NORTH);
 
         eventsPanel = new JPanel();
         eventsPanel.setLayout(new BoxLayout(eventsPanel, BoxLayout.Y_AXIS));
-        eventsPanel.setBackground(Color.WHITE);
-        add(new JScrollPane(eventsPanel), BorderLayout.CENTER);
-
-        JButton closeBtn = createWAButton("Back to Settings", false);
-        closeBtn.addActionListener(e -> dispose());
-        add(closeBtn, BorderLayout.SOUTH);
+        eventsPanel.setBackground(BG_LIGHT);
+        JScrollPane scrollPane = new JScrollPane(eventsPanel);
+        scrollPane.setBorder(null);
+        add(scrollPane, BorderLayout.CENTER);
     }
 
     private void loadEvents() {
@@ -47,8 +46,9 @@ public class CampusEventsFeedScreen extends BaseScreen {
         
         if (events.isEmpty()) {
             JLabel emptyLabel = new JLabel("No upcoming events.");
+            emptyLabel.setForeground(TEXT_SECONDARY);
             emptyLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
-            eventsPanel.add(Box.createVerticalStrut(20));
+            eventsPanel.add(Box.createVerticalStrut(50));
             eventsPanel.add(emptyLabel);
         } else {
             for (SettingsManager.CampusEvent e : events) {
@@ -62,27 +62,28 @@ public class CampusEventsFeedScreen extends BaseScreen {
     private JPanel createEventCard(SettingsManager.CampusEvent e) {
         JPanel card = new JPanel();
         card.setLayout(new BoxLayout(card, BoxLayout.Y_AXIS));
-        card.setBackground(Color.WHITE);
+        card.setBackground(CARD_WHITE);
         card.setBorder(BorderFactory.createCompoundBorder(
-            BorderFactory.createMatteBorder(0, 0, 1, 0, WA_LIGHT_GRAY),
+            BorderFactory.createMatteBorder(0, 0, 1, 0, DIVIDER),
             BorderFactory.createEmptyBorder(15, 15, 15, 15)
         ));
-        card.setMaximumSize(new Dimension(400, 200));
+        card.setMaximumSize(new Dimension(Integer.MAX_VALUE, 200));
 
         JLabel titleLabel = new JLabel(e.title);
         titleLabel.setFont(new Font("Segoe UI", Font.BOLD, 16));
-        titleLabel.setForeground(WA_GREEN);
+        titleLabel.setForeground(ACCENT_BLUE);
         card.add(titleLabel);
 
         JLabel infoLabel = new JLabel("📅 " + e.eventDate.toString().substring(0, 16) + " | 📍 " + e.location);
         infoLabel.setFont(new Font("Segoe UI", Font.BOLD, 12));
-        infoLabel.setForeground(WA_GRAY);
+        infoLabel.setForeground(TEXT_SECONDARY);
         card.add(infoLabel);
 
         card.add(Box.createVerticalStrut(10));
 
         JLabel descLabel = new JLabel("<html><body style='width: 300px'>" + e.description + "</body></html>");
         descLabel.setFont(new Font("Segoe UI", Font.PLAIN, 14));
+        descLabel.setForeground(TEXT_MAIN);
         card.add(descLabel);
 
         return card;

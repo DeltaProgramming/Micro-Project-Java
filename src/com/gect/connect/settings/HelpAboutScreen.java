@@ -24,27 +24,28 @@ public class HelpAboutScreen extends BaseScreen {
         JPanel headerPanel = new JPanel();
         JLabel headerTitle = new JLabel("Help & Support");
         styleHeader(headerPanel, headerTitle);
-        headerPanel.add(headerTitle);
+        addBackButton(headerPanel);
         add(headerPanel, BorderLayout.NORTH);
 
         JPanel contentPanel = new JPanel();
         contentPanel.setLayout(new BoxLayout(contentPanel, BoxLayout.Y_AXIS));
-        contentPanel.setBackground(Color.WHITE);
+        contentPanel.setBackground(BG_LIGHT);
         contentPanel.setBorder(BorderFactory.createEmptyBorder(20, 20, 20, 20));
 
-        JLabel logoLabel = new JLabel("<html><center><div style='background-color:#128C7E; width:100px; height:100px; border-radius:50px; color:white; text-align:center;'><br><br><span style='font-size:30px;'>GECT</span></div></center></html>");
+        JLabel logoLabel = new JLabel("<html><center><div style='background-color:#3b82f6; width:100px; height:100px; border-radius:50px; color:white; text-align:center;'><br><br><span style='font-size:30px;'>GECT</span></div></center></html>");
         logoLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
         contentPanel.add(logoLabel);
         contentPanel.add(Box.createVerticalStrut(20));
 
         JLabel versionLabel = new JLabel("GECT Connect v1.0.0");
         versionLabel.setFont(new Font("Segoe UI", Font.BOLD, 18));
+        versionLabel.setForeground(TEXT_MAIN);
         versionLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
         contentPanel.add(versionLabel);
 
         JLabel descLabel = new JLabel("<html><center>The exclusive campus messaging app<br>for Government Engineering College Thrissur.</center></html>");
         descLabel.setFont(new Font("Segoe UI", Font.PLAIN, 14));
-        descLabel.setForeground(WA_GRAY);
+        descLabel.setForeground(TEXT_SECONDARY);
         descLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
         contentPanel.add(descLabel);
 
@@ -52,6 +53,7 @@ public class HelpAboutScreen extends BaseScreen {
 
         JLabel supportLabel = new JLabel("<html><center>For support, contact:<br><b>support@gectcr.ac.in</b></center></html>");
         supportLabel.setFont(new Font("Segoe UI", Font.PLAIN, 14));
+        supportLabel.setForeground(TEXT_MAIN);
         supportLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
         contentPanel.add(supportLabel);
 
@@ -59,6 +61,10 @@ public class HelpAboutScreen extends BaseScreen {
 
         JButton closeBtn = createWAButton("Close", true);
         closeBtn.addActionListener(e -> dispose());
-        add(closeBtn, BorderLayout.SOUTH);
+        
+        JPanel btnPanel = new JPanel(new FlowLayout(FlowLayout.CENTER, 0, 20));
+        btnPanel.setBackground(BG_LIGHT);
+        btnPanel.add(closeBtn);
+        add(btnPanel, BorderLayout.SOUTH);
     }
 }

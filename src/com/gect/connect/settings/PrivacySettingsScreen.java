@@ -1,9 +1,10 @@
 package com.gect.connect.settings;
 
+import com.gect.connect.db.SettingsManager;
 import com.gect.connect.gui.BaseScreen;
 import com.gect.connect.model.User;
-import javax.swing.*;
 import java.awt.*;
+import javax.swing.*;
 
 /**
  * Privacy settings screen for GECT Connect.
@@ -11,11 +12,13 @@ import java.awt.*;
  */
 public class PrivacySettingsScreen extends BaseScreen {
     private User currentUser;
+    private SettingsManager.UserSettings settings;
     private JComboBox<String> lastSeenCombo, profilePhotoCombo;
 
     public PrivacySettingsScreen(User user) {
         super("Privacy Settings");
         this.currentUser = user;
+        this.settings = SettingsManager.getSettings(user.getUserId());
         initUI();
     }
 
@@ -25,28 +28,34 @@ public class PrivacySettingsScreen extends BaseScreen {
         JPanel headerPanel = new JPanel();
         JLabel headerTitle = new JLabel("Privacy Controls");
         styleHeader(headerPanel, headerTitle);
-        headerPanel.add(headerTitle);
+        addBackButton(headerPanel);
         add(headerPanel, BorderLayout.NORTH);
 
         JPanel contentPanel = new JPanel(new GridBagLayout());
-        contentPanel.setBackground(Color.WHITE);
+        contentPanel.setBackground(BG_LIGHT);
         GridBagConstraints gbc = new GridBagConstraints();
         gbc.insets = new Insets(15, 20, 15, 20);
         gbc.fill = GridBagConstraints.HORIZONTAL;
 
         int row = 0;
         gbc.gridx = 0; gbc.gridy = row;
-        contentPanel.add(new JLabel("Who can see my last seen:"), gbc);
+        JLabel lastSeenLabel = new JLabel("Who can see my last seen:");
+        lastSeenLabel.setForeground(TEXT_MAIN);
+        contentPanel.add(lastSeenLabel, gbc);
         gbc.gridx = 1;
         String[] options = {"Everyone", "Contacts", "Nobody"};
         lastSeenCombo = new JComboBox<>(options);
+        lastSeenCombo.setSelectedItem(settings.privacyLastSeen);
         contentPanel.add(lastSeenCombo, gbc);
         row++;
 
         gbc.gridx = 0; gbc.gridy = row;
-        contentPanel.add(new JLabel("Who can see my profile photo:"), gbc);
+        JLabel photoLabel = new JLabel("Who can see my profile photo:");
+        photoLabel.setForeground(TEXT_MAIN);
+        contentPanel.add(photoLabel, gbc);
         gbc.gridx = 1;
         profilePhotoCombo = new JComboBox<>(options);
+        profilePhotoCombo.setSelectedItem(settings.privacyProfilePhoto);
         contentPanel.add(profilePhotoCombo, gbc);
         row++;
 
@@ -62,8 +71,14 @@ public class PrivacySettingsScreen extends BaseScreen {
 
         // Listeners
         saveBtn.addActionListener(e -> {
-            showInfo("Privacy settings updated!");
-            dispose();
+            settings.privacyLastSeen = (String) lastSeenCombo.getSelectedItem();
+            settings.privacyProfilePhoto = (String) profilePhotoCombo.getSelectedItem();
+            if (SettingsManager.updateSettings(settings)) {
+                showInfo("Privacy settings updated!");
+                dispose();
+            } else {
+                showError("Failed to update privacy settings.");
+            }
         });
         cancelBtn.addActionListener(e -> dispose());
     }

@@ -2,8 +2,8 @@ package com.gect.connect.auth;
 
 import com.gect.connect.gui.BaseScreen;
 import com.gect.connect.model.User;
-import javax.swing.*;
 import java.awt.*;
+import javax.swing.*;
 
 /**
  * Dashboard after successful login.
@@ -23,20 +23,20 @@ public class Dashboard extends BaseScreen {
 
         // Header
         JPanel headerPanel = new JPanel(new BorderLayout());
-        headerPanel.setBackground(WA_TEAL);
-        headerPanel.setPreferredSize(new Dimension(400, 100));
+        headerPanel.setBackground(PRIMARY_DARK);
+        headerPanel.setPreferredSize(new Dimension(400, 110));
 
         JPanel topHeader = new JPanel(new BorderLayout());
         topHeader.setOpaque(false);
         JLabel titleLabel = new JLabel("  GECT Connect");
         titleLabel.setForeground(Color.WHITE);
-        titleLabel.setFont(new Font("Segoe UI", Font.BOLD, 20));
+        titleLabel.setFont(new Font("Segoe UI", Font.BOLD, 22));
         topHeader.add(titleLabel, BorderLayout.WEST);
 
         JPanel headerIcons = new JPanel(new FlowLayout(FlowLayout.RIGHT, 15, 10));
         headerIcons.setOpaque(false);
         
-        JButton searchBtn = new JButton("🔍");
+        JButton searchBtn = new JButton("<html><span style='font-size:18px;'>🔍</span></html>");
         searchBtn.setForeground(Color.WHITE);
         searchBtn.setContentAreaFilled(false);
         searchBtn.setBorderPainted(false);
@@ -44,7 +44,7 @@ public class Dashboard extends BaseScreen {
         searchBtn.setCursor(new Cursor(Cursor.HAND_CURSOR));
         searchBtn.addActionListener(e -> new com.gect.connect.contacts.SearchUsersScreen(currentUser).setVisible(true));
 
-        JButton moreBtn = new JButton("⋮");
+        JButton moreBtn = new JButton("<html><span style='font-size:18px;'>⋮</span></html>");
         moreBtn.setForeground(Color.WHITE);
         moreBtn.setContentAreaFilled(false);
         moreBtn.setBorderPainted(false);
@@ -78,8 +78,8 @@ public class Dashboard extends BaseScreen {
         add(headerPanel, BorderLayout.NORTH);
 
         // Main Grid Content
-        JPanel contentPanel = new JPanel(new GridLayout(3, 2, 15, 15));
-        contentPanel.setBackground(Color.WHITE);
+        JPanel contentPanel = new JPanel(new GridLayout(4, 2, 20, 20));
+        contentPanel.setBackground(BG_LIGHT);
         contentPanel.setBorder(BorderFactory.createEmptyBorder(25, 25, 25, 25));
 
         JButton profileBtn = createMenuButton("My Profile", "👤");
@@ -87,6 +87,7 @@ public class Dashboard extends BaseScreen {
         JButton chatsBtn = createMenuButton("Direct Chats", "💬");
         JButton groupsBtn = createMenuButton("Group Chats", "🏘️");
         JButton notificationsBtn = createMenuButton("Academic", "📢");
+        JButton eventsBtn = createMenuButton("Campus Events", "🎭");
         JButton settingsBtn = createMenuButton("Settings", "⚙️");
 
         contentPanel.add(profileBtn);
@@ -94,20 +95,24 @@ public class Dashboard extends BaseScreen {
         contentPanel.add(chatsBtn);
         contentPanel.add(groupsBtn);
         contentPanel.add(notificationsBtn);
+        contentPanel.add(eventsBtn);
         contentPanel.add(settingsBtn);
 
-        add(contentPanel, BorderLayout.CENTER);
+        JScrollPane scroll = new JScrollPane(contentPanel);
+        scroll.setBorder(null);
+        add(scroll, BorderLayout.CENTER);
 
         // Logout Footer
         JPanel footerPanel = new JPanel(new BorderLayout());
-        footerPanel.setBackground(WA_LIGHT_GRAY);
-        footerPanel.setBorder(BorderFactory.createMatteBorder(1, 0, 0, 0, Color.LIGHT_GRAY));
+        footerPanel.setBackground(CARD_WHITE);
+        footerPanel.setBorder(BorderFactory.createMatteBorder(1, 0, 0, 0, DIVIDER));
 
         JButton logoutBtn = new JButton("LOGOUT (" + currentUser.getFullName() + ")");
         logoutBtn.setFont(new Font("Segoe UI", Font.BOLD, 12));
-        logoutBtn.setForeground(Color.RED);
+        logoutBtn.setForeground(new Color(239, 68, 68)); // Modern Red
         logoutBtn.setBorderPainted(false);
         logoutBtn.setContentAreaFilled(false);
+        logoutBtn.setCursor(new Cursor(Cursor.HAND_CURSOR));
         logoutBtn.addActionListener(e -> {
             dispose();
             new LoginScreen().setVisible(true);
@@ -121,6 +126,7 @@ public class Dashboard extends BaseScreen {
         chatsBtn.addActionListener(e -> new com.gect.connect.chat.ChatListScreen(currentUser).setVisible(true));
         groupsBtn.addActionListener(e -> new com.gect.connect.groups.GroupsListScreen(currentUser).setVisible(true));
         notificationsBtn.addActionListener(e -> new com.gect.connect.notifications.NotificationsFeedScreen(currentUser).setVisible(true));
+        eventsBtn.addActionListener(e -> new com.gect.connect.settings.CampusEventsFeedScreen(currentUser).setVisible(true));
         settingsBtn.addActionListener(e -> new com.gect.connect.settings.SettingsScreen(currentUser).setVisible(true));
     }
 
@@ -138,11 +144,11 @@ public class Dashboard extends BaseScreen {
     private JButton createMenuButton(String text, String icon) {
         JButton btn = new JButton("<html><center><span style='font-size:24px;'>" + icon + "</span><br><br>" + text + "</center></html>");
         btn.setFont(new Font("Segoe UI", Font.BOLD, 14));
-        btn.setBackground(Color.WHITE);
-        btn.setForeground(WA_GREEN); // Green text as requested
+        btn.setBackground(CARD_WHITE);
+        btn.setForeground(ACCENT_BLUE);
         btn.setFocusPainted(false);
         btn.setBorder(BorderFactory.createCompoundBorder(
-            BorderFactory.createLineBorder(WA_LIGHT_GRAY, 1),
+            BorderFactory.createLineBorder(DIVIDER, 1),
             BorderFactory.createEmptyBorder(10, 10, 10, 10)
         ));
         btn.setCursor(new Cursor(Cursor.HAND_CURSOR));
@@ -150,10 +156,10 @@ public class Dashboard extends BaseScreen {
         // Hover effect
         btn.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseEntered(java.awt.event.MouseEvent e) {
-                btn.setBackground(WA_LIGHT_GRAY);
+                btn.setBackground(HOVER_COLOR);
             }
             public void mouseExited(java.awt.event.MouseEvent e) {
-                btn.setBackground(Color.WHITE);
+                btn.setBackground(CARD_WHITE);
             }
         });
         return btn;

@@ -21,42 +21,56 @@ public class ForgotPasswordScreen extends BaseScreen {
     private void initUI() {
         setLayout(new BorderLayout());
 
-        JPanel headerPanel = new JPanel(new BorderLayout());
-        headerPanel.setBackground(WA_TEAL);
-        headerPanel.setPreferredSize(new Dimension(400, 60));
-
-        JPanel leftHeader = new JPanel(new FlowLayout(FlowLayout.LEFT, 10, 15));
-        leftHeader.setOpaque(false);
-        addBackButton(leftHeader);
-        
-        JLabel headerTitle = new JLabel("Reset Your Password");
-        headerTitle.setForeground(Color.WHITE);
-        headerTitle.setFont(new Font("Segoe UI", Font.BOLD, 18));
-        leftHeader.add(headerTitle);
-        headerPanel.add(leftHeader, BorderLayout.WEST);
+        JPanel headerPanel = new JPanel();
+        JLabel headerTitle = new JLabel("Reset Password");
+        styleHeader(headerPanel, headerTitle);
+        addBackButton(headerPanel);
         add(headerPanel, BorderLayout.NORTH);
 
         JPanel contentPanel = new JPanel(new GridBagLayout());
-        contentPanel.setBackground(Color.WHITE);
+        contentPanel.setBackground(BG_LIGHT);
         GridBagConstraints gbc = new GridBagConstraints();
-        gbc.insets = new Insets(10, 10, 10, 10);
+        gbc.insets = new Insets(10, 25, 10, 25);
         gbc.fill = GridBagConstraints.HORIZONTAL;
 
         int row = 0;
-        addLabelField(contentPanel, gbc, "College Email:", emailField = createTextField(20), row++);
-        addLabelField(contentPanel, gbc, "New Password:", newPassField = createPasswordField(20), row++);
-        addLabelField(contentPanel, gbc, "Confirm Password:", confirmPassField = createPasswordField(20), row++);
+        gbc.gridx = 0; gbc.gridy = row;
+        JLabel emailLabel = new JLabel("College Email");
+        emailLabel.setForeground(TEXT_SECONDARY);
+        contentPanel.add(emailLabel, gbc);
+        gbc.gridx = 1;
+        emailField = createTextField(20);
+        contentPanel.add(emailField, gbc);
+        row++;
+
+        gbc.gridx = 0; gbc.gridy = row;
+        JLabel passLabel = new JLabel("New Password");
+        passLabel.setForeground(TEXT_SECONDARY);
+        contentPanel.add(passLabel, gbc);
+        gbc.gridx = 1;
+        newPassField = createPasswordField(20);
+        contentPanel.add(newPassField, gbc);
+        row++;
+
+        gbc.gridx = 0; gbc.gridy = row;
+        JLabel confirmLabel = new JLabel("Confirm Password");
+        confirmLabel.setForeground(TEXT_SECONDARY);
+        contentPanel.add(confirmLabel, gbc);
+        gbc.gridx = 1;
+        confirmPassField = createPasswordField(20);
+        contentPanel.add(confirmPassField, gbc);
+        row++;
 
         JButton resetBtn = createWAButton("Reset Password", true);
         JButton cancelBtn = createWAButton("Cancel", false);
         
-        JPanel buttonPanel = new JPanel();
-        buttonPanel.setBackground(Color.WHITE);
-        buttonPanel.add(resetBtn);
-        buttonPanel.add(cancelBtn);
-        
         gbc.gridx = 0; gbc.gridy = row; gbc.gridwidth = 2;
-        contentPanel.add(buttonPanel, gbc);
+        gbc.insets = new Insets(30, 25, 10, 25);
+        contentPanel.add(resetBtn, gbc);
+        row++;
+        
+        gbc.insets = new Insets(5, 25, 25, 25);
+        contentPanel.add(cancelBtn, gbc);
 
         add(contentPanel, BorderLayout.CENTER);
 

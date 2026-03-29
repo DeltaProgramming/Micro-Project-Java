@@ -99,10 +99,20 @@ CREATE TABLE IF NOT EXISTS campus_events (
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 
+CREATE TABLE IF NOT EXISTS notification_reads (
+    notification_id INT,
+    user_id INT,
+    read_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    PRIMARY KEY (notification_id, user_id),
+    FOREIGN KEY (notification_id) REFERENCES notifications(notification_id) ON DELETE CASCADE,
+    FOREIGN KEY (user_id) REFERENCES users(user_id) ON DELETE CASCADE
+);
+
 CREATE TABLE IF NOT EXISTS user_settings (
     user_id INT PRIMARY KEY,
     theme ENUM('Light', 'Dark') DEFAULT 'Light',
     notification_enabled BOOLEAN DEFAULT TRUE,
+    notification_sound VARCHAR(50) DEFAULT 'Default',
     privacy_last_seen ENUM('Everyone', 'Contacts', 'Nobody') DEFAULT 'Everyone',
     privacy_profile_photo ENUM('Everyone', 'Contacts', 'Nobody') DEFAULT 'Everyone',
     FOREIGN KEY (user_id) REFERENCES users(user_id) ON DELETE CASCADE

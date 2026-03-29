@@ -26,27 +26,16 @@ public class ChatListScreen extends BaseScreen {
         setLayout(new BorderLayout());
 
         // Header
-        JPanel headerPanel = new JPanel(new BorderLayout());
-        headerPanel.setBackground(WA_TEAL);
-        headerPanel.setPreferredSize(new Dimension(400, 60));
-
-        JPanel leftHeader = new JPanel(new FlowLayout(FlowLayout.LEFT, 10, 15));
-        leftHeader.setOpaque(false);
-        addBackButton(leftHeader);
-        
+        JPanel headerPanel = new JPanel();
         JLabel headerTitle = new JLabel("Chats");
-        headerTitle.setForeground(Color.WHITE);
-        headerTitle.setFont(new Font("Segoe UI", Font.BOLD, 18));
-        leftHeader.add(headerTitle);
-        headerPanel.add(leftHeader, BorderLayout.WEST);
+        styleHeader(headerPanel, headerTitle);
+        addBackButton(headerPanel);
         add(headerPanel, BorderLayout.NORTH);
 
         listPanel = new JPanel();
         listPanel.setLayout(new BoxLayout(listPanel, BoxLayout.Y_AXIS));
-        listPanel.setBackground(Color.WHITE);
-        JScrollPane scrollPane = new JScrollPane(listPanel);
-        scrollPane.setBorder(null);
-        add(scrollPane, BorderLayout.CENTER);
+        listPanel.setBackground(WA_CHAT_BG);
+        add(new JScrollPane(listPanel), BorderLayout.CENTER);
 
         // FAB-like New Chat Button
         JButton newChatBtn = new JButton("<html><div style='background-color:#25D366; width:50px; height:50px; border-radius:25px; color:white; text-align:center;'><br><span style='font-size:20px;'>+</span></div></html>");

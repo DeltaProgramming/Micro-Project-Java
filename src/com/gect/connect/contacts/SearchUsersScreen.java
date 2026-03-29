@@ -25,33 +25,35 @@ public class SearchUsersScreen extends BaseScreen {
     private void initUI() {
         setLayout(new BorderLayout());
 
-        JPanel headerPanel = new JPanel(new BorderLayout());
-        headerPanel.setBackground(WA_TEAL);
-        headerPanel.setPreferredSize(new Dimension(400, 60));
-
-        JPanel leftHeader = new JPanel(new FlowLayout(FlowLayout.LEFT, 10, 15));
-        leftHeader.setOpaque(false);
-        addBackButton(leftHeader);
-        
+        JPanel headerPanel = new JPanel();
         JLabel headerTitle = new JLabel("Search Users");
-        headerTitle.setForeground(Color.WHITE);
-        headerTitle.setFont(new Font("Segoe UI", Font.BOLD, 18));
-        leftHeader.add(headerTitle);
-        headerPanel.add(leftHeader, BorderLayout.WEST);
+        styleHeader(headerPanel, headerTitle);
+        addBackButton(headerPanel);
         add(headerPanel, BorderLayout.NORTH);
 
-        JPanel searchBarPanel = new JPanel(new BorderLayout());
-        searchBarPanel.setBackground(WA_LIGHT_GRAY);
+        JPanel searchBarPanel = new JPanel(new BorderLayout(10, 0));
+        searchBarPanel.setBackground(BG_LIGHT);
+        searchBarPanel.setBorder(BorderFactory.createEmptyBorder(15, 20, 15, 20));
+        
         searchField = createTextField(20);
-        JButton searchBtn = createWAButton("Search", true);
+        searchField.setToolTipText("Search by name or email...");
+        
+        JButton searchBtn = createWAButton("SEARCH", true);
         searchBarPanel.add(searchField, BorderLayout.CENTER);
         searchBarPanel.add(searchBtn, BorderLayout.EAST);
-        add(searchBarPanel, BorderLayout.NORTH);
+        
+        JPanel topWrapper = new JPanel(new BorderLayout());
+        topWrapper.add(headerPanel, BorderLayout.NORTH);
+        topWrapper.add(searchBarPanel, BorderLayout.SOUTH);
+        add(topWrapper, BorderLayout.NORTH);
 
         resultsPanel = new JPanel();
         resultsPanel.setLayout(new BoxLayout(resultsPanel, BoxLayout.Y_AXIS));
-        resultsPanel.setBackground(Color.WHITE);
-        add(new JScrollPane(resultsPanel), BorderLayout.CENTER);
+        resultsPanel.setBackground(BG_LIGHT);
+        
+        JScrollPane scrollPane = new JScrollPane(resultsPanel);
+        scrollPane.setBorder(null);
+        add(scrollPane, BorderLayout.CENTER);
 
         // Listeners
         searchBtn.addActionListener(e -> performSearch());
@@ -66,7 +68,11 @@ public class SearchUsersScreen extends BaseScreen {
         List<User> results = ContactManager.searchUsers(query);
         
         if (results.isEmpty()) {
-            resultsPanel.add(new JLabel("No users found."));
+            JLabel emptyLabel = new JLabel("No users found.");
+            emptyLabel.setForeground(TEXT_SECONDARY);
+            emptyLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
+            resultsPanel.add(Box.createVerticalStrut(50));
+            resultsPanel.add(emptyLabel);
         } else {
             for (User user : results) {
                 if (user.getUserId() != currentUser.getUserId()) {
@@ -79,30 +85,35 @@ public class SearchUsersScreen extends BaseScreen {
     }
 
     private JPanel createResultRow(User user) {
-        JPanel row = new JPanel(new BorderLayout());
-        row.setBackground(Color.WHITE);
-        row.setMaximumSize(new Dimension(400, 70));
-        row.setBorder(BorderFactory.createMatteBorder(0, 0, 1, 0, WA_LIGHT_GRAY));
+        JPanel row = new JPanel(new BorderLayout(15, 0));
+        row.setBackground(CARD_WHITE);
+        row.setMaximumSize(new Dimension(Integer.MAX_VALUE, 80));
+        row.setBorder(BorderFactory.createCompoundBorder(
+            BorderFactory.createMatteBorder(0, 0, 1, 0, DIVIDER),
+            BorderFactory.createEmptyBorder(12, 20, 12, 20)
+        ));
 
-        JLabel iconLabel = new JLabel("<html><div style='background-color:#128C7E; width:40px; height:40px; border-radius:20px; color:white; text-align:center;'><br>" + user.getFullName().charAt(0) + "</div></html>");
-        iconLabel.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
+        JLabel iconLabel = new JLabel("<html><div style='background-color:#3b82f6; width:45px; height:45px; border-radius:22px; color:white; text-align:center;'><br>" + user.getFullName().charAt(0) + "</div></html>");
 
-        JPanel infoPanel = new JPanel(new GridLayout(2, 1));
-        infoPanel.setBackground(Color.WHITE);
+        JPanel infoPanel = new JPanel(new GridLayout(2, 1, 0, 2));
+        infoPanel.setOpaque(false);
         JLabel nameLabel = new JLabel(user.getFullName());
-        nameLabel.setFont(new Font("Segoe UI", Font.BOLD, 14));
+        nameLabel.setFont(new Font("Segoe UI", Font.BOLD, 15));
+        nameLabel.setForeground(TEXT_MAIN);
         JLabel detailsLabel = new JLabel(user.getDepartment() + " | " + user.getRole());
-        detailsLabel.setFont(new Font("Segoe UI", Font.PLAIN, 12));
-        detailsLabel.setForeground(WA_GRAY);
+        detailsLabel.setFont(new Font("Segoe UI", Font.PLAIN, 13));
+        detailsLabel.setForeground(TEXT_SECONDARY);
         infoPanel.add(nameLabel);
         infoPanel.add(detailsLabel);
 
-        JButton addBtn = createWAButton("Add", true);
+        JButton addBtn = createWAButton("ADD", true);
+        addBtn.setPreferredSize(new Dimension(80, 35));
         addBtn.addActionListener(e -> {
             if (ContactManager.sendRequest(currentUser.getUserId(), user.getUserId())) {
                 showInfo("Request sent to " + user.getFullName());
                 addBtn.setEnabled(false);
-                addBtn.setText("Sent");
+                addBtn.setText("SENT");
+                addBtn.setBackground(TEXT_SECONDARY);
             } else {
                 showError("Request failed. Already contacts or pending?");
             }
