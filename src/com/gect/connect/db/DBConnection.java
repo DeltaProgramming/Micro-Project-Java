@@ -12,7 +12,7 @@ public class DBConnection {
     // Note: Change these as per your MySQL configuration
     private static final String URL = "jdbc:mysql://localhost:3306/gect_connect";
     private static final String USER = "root";
-    private static final String PASSWORD = "4020"; // Change to your password
+    private static final String PASSWORD = ""; // Change to your password
 
     private static Connection connection = null;
 
